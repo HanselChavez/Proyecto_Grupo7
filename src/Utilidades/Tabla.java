@@ -10,6 +10,7 @@ import Entidades.*;
 import RSMaterialComponent.RSTableMetroCustom;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import java.util.Date;
 import java.util.List;
@@ -21,32 +22,26 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Tabla {
     public static int llenarTablaUsuarios(ResultSet rs,RSTableMetroCustom tabla
-        , List<Usuario> lista){
+        , List<Usuario> lista)  throws SQLException {
         int contador = 0;        
         Usuario user ;
         DefaultTableModel modeloTabla = (DefaultTableModel) tabla.getModel();
         while(modeloTabla.getRowCount()>0){
             modeloTabla.removeRow(0);        
-        }
-        try {
-            String datos []= new String[4];
-            while(rs.next()){
-                user = new Usuario();
-                llenarDatos(user,rs);
-                datos[0] = rs.getString("idUsuario");
-                datos[1] = rs.getString("nombre");
-                datos[2] = rs.getString("apellidoPaterno");
-                datos[2] = datos[2]+" "+rs.getString("apellidoMaterno");
-                datos[3]  = rs.getString("nombreRol");
-                contador++;
-                modeloTabla.addRow(datos);
-                lista.add(user);
-            }
-            
-        } catch (SQLException e) {
-            
-        }
-        
+        }        
+        String datos []= new String[4];
+        while(rs.next()){
+            user = new Usuario();
+            llenarDatos(user,rs);
+            datos[0] = rs.getString("idUsuario");
+            datos[1] = rs.getString("nombre");
+            datos[2] = rs.getString("apellidoPaterno");
+            datos[2] = datos[2]+" "+rs.getString("apellidoMaterno");
+            datos[3]  = rs.getString("nombreRol");
+            contador++;
+            modeloTabla.addRow(datos);
+            lista.add(user);
+        }       
         return contador;
         
     }
@@ -80,75 +75,119 @@ public class Tabla {
             
     }
     public static int llenarTablaSolicitudes(ResultSet rs,RSTableMetroCustom tabla
-        ,HistorialSolicitudes historial,String codigo){
-         int contador = 0;
-      
+        ,List<Solicitud> listaSolicitudes,String codigo) throws SQLException {
+         int contador = 0;        
         DefaultTableModel modeloTabla = (DefaultTableModel) tabla.getModel();
         while(modeloTabla.getRowCount()>0){
             modeloTabla.removeRow(0);        
-        }
-        try {
-            
-            if(codigo.equals(""))
-            {
-                String datos []= new String[5];            
-                while(rs.next()){
+        }     
+        if(codigo.equals(""))
+        {
+            String datos []= new String[5];            
+            while(rs.next()){
 
-                    datos[0] = rs.getString("idSolicitud");
-                    datos[1] = rs.getString("idCliente");
-                    datos[2] = rs.getString("contenidoSolicitud");
-                    datos[3] = rs.getDate("fechaSolicitud").toString();
-                    datos[4]  = rs.getString("nombreEstado");
-                    contador++;
-                    modeloTabla.addRow(datos);
-                }
-            }else{
-               
-                String datos []= new String[4];            
-                while(rs.next()){
-                    Solicitud solicitud = new Solicitud();                    
-                    datos[0] = rs.getString("idSolicitud");
-                    datos[1] = rs.getString("contenidoSolicitud");
-                    datos[2] = rs.getDate("fechaSolicitud").toString();
-                    datos[3] = rs.getString("nombreEstado");   
-                    EstadoSolicitud estado = new EstadoSolicitud(
-                            rs.getInt("idEstado"),datos[3]
-                            ,rs.getString("descripcionEstado") );
-                    solicitud.setCodigo(datos[0]);
-                    solicitud.setDescripcion(datos[1]);
-                    solicitud.setFecha(rs.getDate("fechaSolicitud"));                    
-                    solicitud.setEstado(estado);              
-                    historial.agregarSolicitud(solicitud);
-                    modeloTabla.addRow(datos);
-                }
+                datos[0] = rs.getString("idSolicitud");
+                datos[1] = rs.getString("idUsuario");
+                datos[2] = rs.getString("contenidoSolicitud");
+                datos[3] = rs.getDate("fechaSolicitud").toString();
+                datos[4]  = rs.getString("nombreEstado");
+                Solicitud solicitud = new Solicitud(); 
+                EstadoSolicitud estado = new EstadoSolicitud(
+                        rs.getInt("idEstado"),datos[4]
+                        ,rs.getString("descripcionEstado") );
+                solicitud.setCodigo(datos[0]);
+                solicitud.setDescripcion(datos[2]);
+                solicitud.setFecha(rs.getDate("fechaSolicitud"));                    
+                solicitud.setEstado(estado);    
+                solicitud.setIdUsuario(datos[1]);
+                solicitud.setNombreUser(rs.getString("nombreCompleto"));
+                listaSolicitudes.add(solicitud);
+                contador++;
+                modeloTabla.addRow(datos);
             }
-        } catch (SQLException e) {
-            
+        }else{
+
+            String datos []= new String[4];            
+            while(rs.next()){
+                Solicitud solicitud = new Solicitud();                    
+                datos[0] = rs.getString("idSolicitud");
+                datos[1] = rs.getString("contenidoSolicitud");
+                datos[2] = rs.getDate("fechaSolicitud").toString();
+                datos[3] = rs.getString("nombreEstado");   
+                EstadoSolicitud estado = new EstadoSolicitud(
+                        rs.getInt("idEstado"),datos[3]
+                        ,rs.getString("descripcionEstado") );
+                solicitud.setCodigo(datos[0]);
+                solicitud.setDescripcion(datos[1]);
+                solicitud.setFecha(rs.getDate("fechaSolicitud"));                    
+                solicitud.setEstado(estado);              
+                listaSolicitudes.add(solicitud);
+                modeloTabla.addRow(datos);
+            }
         }
+       
         return contador;
     }
 
     static void llenarTablaEstados(ResultSet rs, RSTableMetroCustom tabla
-            ,List<EstadoSolicitud> lista) {       
+            ,List<EstadoSolicitud> lista)  throws SQLException {      
         EstadoSolicitud estado ;
         DefaultTableModel modeloTabla = (DefaultTableModel) tabla.getModel();
         while(modeloTabla.getRowCount()>0){
             modeloTabla.removeRow(0);        
         }
-        try {
-            String datos []= new String[3];           
-            while(rs.next()){
-                datos[0] = rs.getString("idEstado");
-                datos[1] = rs.getString("nombreEstado");
-                datos[2] = rs.getString("descripcionEstado");            
-                estado = new EstadoSolicitud(Integer.parseInt(datos[0])
-                        , datos[1], datos[2]);          
-                modeloTabla.addRow(datos);
-                lista.add(estado);
-            }
+       
+        String datos []= new String[3];           
+        while(rs.next()){
+            datos[0] = rs.getString("idEstado");
+            datos[1] = rs.getString("nombreEstado");
+            datos[2] = rs.getString("descripcionEstado");            
+            estado = new EstadoSolicitud(Integer.parseInt(datos[0])
+                    , datos[1], datos[2]);          
+            modeloTabla.addRow(datos);
+            lista.add(estado);
+        }
             
-        } catch (SQLException e) {
-            
-        }        
+    }
+
+    static void llenarTablaAvisos(ResultSet rs, RSTableMetroCustom tabla
+            , String buscar,List<Mensaje>lista)
+            throws SQLException {
+        DefaultTableModel modeloTabla = (DefaultTableModel) tabla.getModel();
+        while(modeloTabla.getRowCount()>0){
+            modeloTabla.removeRow(0);        
+        }       
+        String datos []= new String[4];
+        while(rs.next()){              
+            datos[0] = rs.getString("idAviso");
+            datos[1] = rs.getString("nombreCompleto");
+            datos[2] = rs.getString("contenidoAviso");
+            datos[3] = rs.getDate("fechaAviso").toString(); 
+            Mensaje aviso = new Mensaje(datos[0],"Aviso"
+                    ,datos[2], rs.getDate("fechaAviso"));
+            aviso.setNombreUsuario(datos[1]);
+            lista.add(aviso);
+            modeloTabla.addRow(datos);        
+        }          
+    }
+
+    static void llenarTablaRetroAlimentacion(ResultSet rs, RSTableMetroCustom tabla
+            , String buscar, List<Mensaje> lista,String tipo) throws SQLException {
+         DefaultTableModel modeloTabla = (DefaultTableModel) tabla.getModel();
+        while(modeloTabla.getRowCount()>0){
+            modeloTabla.removeRow(0);        
+        }       
+        String datos []= new String[3];        
+        while(rs.next()){              
+            datos[0] = rs.getString("id"+tipo);
+            datos[1] = rs.getString("contenido"+tipo);
+            datos[2] = rs.getDate("fecha"+tipo).toString();       
+            Mensaje comentario = new Mensaje(datos[0],tipo
+                    ,datos[1], rs.getDate("fecha"+tipo));            
+            lista.add(comentario);
+            modeloTabla.addRow(datos);        
+        }   
+
+
     }
 }

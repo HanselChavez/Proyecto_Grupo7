@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import rojeru_san.efectos.ValoresEnum;
+
+
 
 
 /**
@@ -33,6 +36,7 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
         initComponents();        
         servicio =new ServiciosUsuario();
         ocultarLabels();
+        btnVolver.setVisible(false);
     }
 
     /**
@@ -44,7 +48,7 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlSlider = new rojerusan.RSPanelEffect();
+        pnlSliderSolicitud = new rojerusan.RSPanelEffect();
         pnlHSolicitud = new javax.swing.JPanel();
         lblestado = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -69,7 +73,8 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        pnlSlider.setBackground(new java.awt.Color(255, 255, 255));
+        pnlSliderSolicitud.setBackground(new java.awt.Color(255, 255, 255));
+        pnlSliderSolicitud.setName("pnlSliderSolicitud"); // NOI18N
 
         pnlHSolicitud.setBackground(new java.awt.Color(255, 255, 255));
         pnlHSolicitud.setName("pnlHSolicitud"); // NOI18N
@@ -102,7 +107,9 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
         });
         tablaSolicitudes.setBackgoundHead(new java.awt.Color(0, 108, 255));
         tablaSolicitudes.setBackgoundHover(new java.awt.Color(10, 94, 208));
+        tablaSolicitudes.setColorPrimaryText(new java.awt.Color(0, 0, 0));
         tablaSolicitudes.setColorSecondary(new java.awt.Color(255, 255, 255));
+        tablaSolicitudes.setColorSecundaryText(new java.awt.Color(0, 0, 0));
         tablaSolicitudes.setRowHeight(40);
         tablaSolicitudes.setSelectionBackground(new java.awt.Color(78, 85, 230));
         jScrollPane1.setViewportView(tablaSolicitudes);
@@ -226,7 +233,7 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        pnlSlider.add(pnlHSolicitud, "card2");
+        pnlSliderSolicitud.add(pnlHSolicitud, "card2");
 
         pnlNuevaSolicitud.setBackground(new java.awt.Color(255, 255, 255));
         pnlNuevaSolicitud.setName("pnlNuevaSolicitud"); // NOI18N
@@ -246,13 +253,13 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
         jScrollPane2.setViewportView(txtMotivo);
 
         btnAceptarEditar.setBackground(new java.awt.Color(204, 204, 204));
-        btnAceptarEditar.setText("Aceptar");
-        btnAceptarEditar.setBackgroundHover(new java.awt.Color(0, 108, 255));
+        btnAceptarEditar.setText("Guardar");
+        btnAceptarEditar.setBackgroundHover(new java.awt.Color(0, 153, 0));
         btnAceptarEditar.setForegroundIcon(new java.awt.Color(0, 0, 0));
         btnAceptarEditar.setForegroundText(new java.awt.Color(0, 0, 0));
         btnAceptarEditar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnAceptarEditar.setIconTextGap(29);
-        btnAceptarEditar.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CHECK_BOX);
+        btnAceptarEditar.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.SAVE);
         btnAceptarEditar.setPaddingLeft(15);
         btnAceptarEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -333,7 +340,7 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        pnlSlider.add(pnlNuevaSolicitud, "card3");
+        pnlSliderSolicitud.add(pnlNuevaSolicitud, "card3");
 
         btnVolver.setBackground(new java.awt.Color(204, 204, 204));
         btnVolver.setText("Volver");
@@ -354,7 +361,7 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlSliderSolicitud, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -363,7 +370,7 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlSliderSolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 14, Short.MAX_VALUE))
@@ -384,32 +391,35 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         ocultarLabels();
         limpiarCampos();
-        this.pnlSlider.setPanelNormal(pnlHSolicitud);
+        this.pnlSliderSolicitud.setPanelNormal(pnlHSolicitud);
+        btnVolver.setVisible(false);
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnNuevaSolicitudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaSolicitudActionPerformed
         lblTitulo.setText("Nueva Solicitud");
         lblmotivo.setText("Ingrese movito de Solicitud.");
         btnAceptarEditar.setText("Aceptar");
+        btnAceptarEditar.setIcons(ValoresEnum.ICONS.CHECK);
+        btnVolver.setVisible(true);
         txtdireccion.setText(user.getDireccion());
-        this.pnlSlider.setPanelNormal(pnlNuevaSolicitud);
+        this.pnlSliderSolicitud.setPanelNormal(pnlNuevaSolicitud);
         
     }//GEN-LAST:event_btnNuevaSolicitudActionPerformed
 
     private void btnEditarSolicitudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarSolicitudActionPerformed
         lblTitulo.setText("Editar Solicitud");
-        btnAceptarEditar.setText("Editar");
-        lblmotivo.setText("Ingrese el nuevo motivo de Solicitud.");        
+        btnAceptarEditar.setText("Guardar");
+        btnAceptarEditar.setIcons(ValoresEnum.ICONS.SAVE);
+        lblmotivo.setText("Ingrese el nuevo motivo de Solicitud.");       
         int indice = tablaSolicitudes.getSelectedRow();
-        System.out.print(indice+"   ");
         Solicitud solicitud;
         if(indice!=-1){
-            solicitud = hSolicitudes.getListaDeSolicitudes().get(indice);     
-            System.out.println(solicitud.toString());
+            solicitud = hSolicitudes.getListaDeSolicitudes().get(indice);  
             if("Pendiente".equals(solicitud.getEstado().getNombre()))
             {
                 llenarDatos(solicitud);               
-                this.pnlSlider.setPanelNormal(pnlNuevaSolicitud);
+                btnVolver.setVisible(true);
+                this.pnlSliderSolicitud.setPanelNormal(pnlNuevaSolicitud);
             }
             else{
                  JOptionPane.showMessageDialog(null,"La solicitud ya ha sido "
@@ -485,14 +495,14 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
                 else
                     JOptionPane.showMessageDialog(null, "Completa el todos los campos");
             }
-            else if(btnAceptarEditar.getText().equals("Editar")){
+            else if(btnAceptarEditar.getText().equals("Guardar")){
                 if(validarCampo()){
                     servicio.editarSolicitud(lblcodigo.getText(),
                             txtMotivo.getText(),user.getDni());
                      JOptionPane.showMessageDialog(null, "La solcitud ha sido "
                              + "editada correctamente");    
                     ocultarLabels();
-                    this.pnlSlider.setPanelNormal(pnlHSolicitud);
+                    this.pnlSliderSolicitud.setPanelNormal(pnlHSolicitud);
                     
                 }else
                     JOptionPane.showMessageDialog(null, "Completa todos los campos");
@@ -524,7 +534,7 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
     private javax.swing.JLabel lblmotivo;
     private javax.swing.JPanel pnlHSolicitud;
     private javax.swing.JPanel pnlNuevaSolicitud;
-    private rojerusan.RSPanelEffect pnlSlider;
+    private rojerusan.RSPanelEffect pnlSliderSolicitud;
     private RSMaterialComponent.RSTableMetroCustom tablaSolicitudes;
     private RSMaterialComponent.RSTextFieldMaterialIcon txtBuscarsolicitud;
     private javax.swing.JTextArea txtMotivo;
@@ -538,6 +548,7 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
 
     } 
     public void ocultarLabels(){
+        
         lblcod.setVisible(false);
         lblcodigo.setVisible(false);
     }
@@ -561,8 +572,9 @@ public class pnlSolicitudesUsuario extends javax.swing.JPanel {
     private void actualizarLista(String buscar) throws SQLException { 
         hSolicitudes.setListaDeSolicitudes(new ArrayList<>());        
         this.servicio.listarSolicitudes(tablaSolicitudes, "", ""
-                , buscar,user.getDni(),hSolicitudes);       
-                
+                , buscar,user.getDni(),hSolicitudes.getListaDeSolicitudes());   
+   
+
     }
  
 }

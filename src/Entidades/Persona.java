@@ -46,9 +46,7 @@ public class Persona {
         this.apellidoMaterno = apellidoM;
     }
 
-    public Date getFechaNac() {
-
-        
+    public Date getFechaNac() {        
         return this.fechaNac;
     }
     public String getFechaString(){

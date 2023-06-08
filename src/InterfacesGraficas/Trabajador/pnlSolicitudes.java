@@ -6,11 +6,15 @@
 package InterfacesGraficas.Trabajador;
 
 
+import Entidades.Solicitud;
 import Utilidades.ServiciosUsuario;
 import java.awt.Color;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -22,19 +26,23 @@ public class pnlSolicitudes extends javax.swing.JPanel {
     private int cantidad;
     private String estado ;
     private String negado;
+    private String nombre;
+    private Color color;
     /**
      * Creates new form principal
      * @throws java.lang.ClassNotFoundException
      * @throws java.sql.SQLException
      */
+    List<Solicitud> listaSolicitudes;
     public pnlSolicitudes() throws ClassNotFoundException, SQLException {
         initComponents();
-        estado = "1";
-        negado="";
-        servicio =new ServiciosUsuario();
-     
-        listarPendientes("");
+        reemplazarVariables("1","","Pendientes ",Color.BLACK);
+        btnVolver.setVisible(false);       
+        servicio =new ServiciosUsuario();     
+        listarSolicitudes("",nombre,estado,color);
     }
+
+   
 
     
     /**
@@ -46,66 +54,41 @@ public class pnlSolicitudes extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnEnProceso = new RSMaterialComponent.RSButtonMaterialIconOne();
-        btnSoliRechazadas = new RSMaterialComponent.RSButtonMaterialIconOne();
-        btnSoliTodas = new RSMaterialComponent.RSButtonMaterialIconOne();
-        rSPanelEffect1 = new newscomponents.RSPanelEffect();
-        jPanel1 = new javax.swing.JPanel();
+        pnlSlider = new newscomponents.RSPanelEffect();
+        pnlTablaSolcitudes = new javax.swing.JPanel();
         lblestado = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaSolicitudes = new RSMaterialComponent.RSTableMetroCustom();
         txtBuscarsolicitud = new RSMaterialComponent.RSTextFieldMaterialIcon();
+        btnEnProceso = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnAprobadas = new RSMaterialComponent.RSButtonMaterialIconOne();
+        btnSoliRechazadas = new RSMaterialComponent.RSButtonMaterialIconOne();
         btnPendiente = new RSMaterialComponent.RSButtonMaterialIconOne();
+        btnSoliTodas = new RSMaterialComponent.RSButtonMaterialIconOne();
+        btnVerInfo = new RSMaterialComponent.RSButtonMaterialIconOne();
+        pnlVerProcesar = new javax.swing.JPanel();
+        cbxEstado = new RSMaterialComponent.RSComboBoxMaterial();
+        lblEstaVP = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtmotivo = new javax.swing.JTextArea();
+        btnGuardar = new RSMaterialComponent.RSButtonMaterialIconOne();
+        lblFecha2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        lblNombreSolic = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        lblIdSolicitud = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        lblIdUser = new javax.swing.JLabel();
+        btnVolver = new RSMaterialComponent.RSButtonMaterialIconOne();
+        btnProcesar = new RSMaterialComponent.RSButtonMaterialIconOne();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        btnEnProceso.setBackground(new java.awt.Color(204, 204, 204));
-        btnEnProceso.setText("En Proceso");
-        btnEnProceso.setBackgroundHover(new java.awt.Color(0, 108, 255));
-        btnEnProceso.setForegroundIcon(new java.awt.Color(255, 102, 51));
-        btnEnProceso.setForegroundIconHover(new java.awt.Color(255, 102, 51));
-        btnEnProceso.setForegroundText(new java.awt.Color(255, 102, 51));
-        btnEnProceso.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnEnProceso.setIconTextGap(29);
-        btnEnProceso.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CHECK_BOX);
-        btnEnProceso.setPaddingLeft(15);
-        btnEnProceso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEnProcesoActionPerformed(evt);
-            }
-        });
-
-        btnSoliRechazadas.setBackground(new java.awt.Color(204, 204, 204));
-        btnSoliRechazadas.setForeground(new java.awt.Color(0, 0, 0));
-        btnSoliRechazadas.setText("Rechazadas");
-        btnSoliRechazadas.setBackgroundHover(new java.awt.Color(0, 108, 255));
-        btnSoliRechazadas.setForegroundText(new java.awt.Color(204, 0, 0));
-        btnSoliRechazadas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnSoliRechazadas.setIconTextGap(29);
-        btnSoliRechazadas.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CANCEL);
-        btnSoliRechazadas.setPaddingLeft(15);
-        btnSoliRechazadas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSoliRechazadasActionPerformed(evt);
-            }
-        });
-
-        btnSoliTodas.setBackground(new java.awt.Color(204, 204, 204));
-        btnSoliTodas.setText("Todas");
-        btnSoliTodas.setBackgroundHover(new java.awt.Color(0, 108, 255));
-        btnSoliTodas.setForegroundText(new java.awt.Color(0, 102, 255));
-        btnSoliTodas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnSoliTodas.setIconTextGap(2);
-        btnSoliTodas.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.ASSIGNMENT);
-        btnSoliTodas.setPaddingLeft(25);
-        btnSoliTodas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSoliTodasActionPerformed(evt);
-            }
-        });
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        pnlTablaSolcitudes.setBackground(new java.awt.Color(255, 255, 255));
+        pnlTablaSolcitudes.setName("pnlTablaSolcitudes"); // NOI18N
 
         lblestado.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         lblestado.setText("Pendiente");
@@ -122,7 +105,7 @@ public class pnlSolicitudes extends javax.swing.JPanel {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Id Solicitud", "Id Usuario", "Descripcion", "Fecha", "Estado"
+                "Id Solicitud", "Id Usuario", "Motivo", "Fecha", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -158,44 +141,26 @@ public class pnlSolicitudes extends javax.swing.JPanel {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(lblestado, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(570, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 750, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(0, 0, Short.MAX_VALUE)
-                            .addComponent(txtBuscarsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addContainerGap()))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblestado, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(443, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(txtBuscarsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
-
-        rSPanelEffect1.add(jPanel1, "card2");
+        btnEnProceso.setBackground(new java.awt.Color(204, 204, 204));
+        btnEnProceso.setText("En Proceso");
+        btnEnProceso.setBackgroundHover(new java.awt.Color(0, 108, 255));
+        btnEnProceso.setForegroundIcon(new java.awt.Color(255, 102, 51));
+        btnEnProceso.setForegroundIconHover(new java.awt.Color(255, 102, 51));
+        btnEnProceso.setForegroundText(new java.awt.Color(255, 102, 51));
+        btnEnProceso.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnEnProceso.setIconTextGap(29);
+        btnEnProceso.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CHECK_BOX);
+        btnEnProceso.setPaddingLeft(15);
+        btnEnProceso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnProcesoActionPerformed(evt);
+            }
+        });
 
         btnAprobadas.setBackground(new java.awt.Color(204, 204, 204));
         btnAprobadas.setText("Aprobadas");
         btnAprobadas.setBackgroundHover(new java.awt.Color(0, 108, 255));
+        btnAprobadas.setForegroundIcon(new java.awt.Color(0, 153, 0));
         btnAprobadas.setForegroundText(new java.awt.Color(0, 153, 0));
         btnAprobadas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnAprobadas.setIconTextGap(2);
@@ -205,6 +170,22 @@ public class pnlSolicitudes extends javax.swing.JPanel {
         btnAprobadas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAprobadasActionPerformed(evt);
+            }
+        });
+
+        btnSoliRechazadas.setBackground(new java.awt.Color(204, 204, 204));
+        btnSoliRechazadas.setForeground(new java.awt.Color(0, 0, 0));
+        btnSoliRechazadas.setText("Rechazadas");
+        btnSoliRechazadas.setBackgroundHover(new java.awt.Color(0, 108, 255));
+        btnSoliRechazadas.setForegroundIcon(new java.awt.Color(204, 0, 0));
+        btnSoliRechazadas.setForegroundText(new java.awt.Color(204, 0, 0));
+        btnSoliRechazadas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnSoliRechazadas.setIconTextGap(29);
+        btnSoliRechazadas.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.CANCEL);
+        btnSoliRechazadas.setPaddingLeft(15);
+        btnSoliRechazadas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSoliRechazadasActionPerformed(evt);
             }
         });
 
@@ -225,6 +206,271 @@ public class pnlSolicitudes extends javax.swing.JPanel {
             }
         });
 
+        btnSoliTodas.setBackground(new java.awt.Color(204, 204, 204));
+        btnSoliTodas.setText("Todas");
+        btnSoliTodas.setBackgroundHover(new java.awt.Color(0, 108, 255));
+        btnSoliTodas.setForegroundIcon(new java.awt.Color(0, 102, 255));
+        btnSoliTodas.setForegroundText(new java.awt.Color(0, 102, 255));
+        btnSoliTodas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnSoliTodas.setIconTextGap(2);
+        btnSoliTodas.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.ASSIGNMENT);
+        btnSoliTodas.setPaddingLeft(25);
+        btnSoliTodas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSoliTodasActionPerformed(evt);
+            }
+        });
+
+        btnVerInfo.setBackground(new java.awt.Color(204, 204, 204));
+        btnVerInfo.setText("Ver Información");
+        btnVerInfo.setBackgroundHover(new java.awt.Color(0, 153, 0));
+        btnVerInfo.setFont(new java.awt.Font("Roboto Bold", 1, 16)); // NOI18N
+        btnVerInfo.setForegroundIcon(new java.awt.Color(0, 0, 0));
+        btnVerInfo.setForegroundText(new java.awt.Color(0, 0, 0));
+        btnVerInfo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnVerInfo.setIconTextGap(2);
+        btnVerInfo.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.VISIBILITY);
+        btnVerInfo.setPaddingLeft(14);
+        btnVerInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerInfoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlTablaSolcitudesLayout = new javax.swing.GroupLayout(pnlTablaSolcitudes);
+        pnlTablaSolcitudes.setLayout(pnlTablaSolcitudesLayout);
+        pnlTablaSolcitudesLayout.setHorizontalGroup(
+            pnlTablaSolcitudesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTablaSolcitudesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlTablaSolcitudesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(pnlTablaSolcitudesLayout.createSequentialGroup()
+                        .addGroup(pnlTablaSolcitudesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlTablaSolcitudesLayout.createSequentialGroup()
+                                .addComponent(btnPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnEnProceso, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAprobadas, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSoliRechazadas, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSoliTodas, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnVerInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlTablaSolcitudesLayout.createSequentialGroup()
+                        .addComponent(lblestado, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtBuscarsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        pnlTablaSolcitudesLayout.setVerticalGroup(
+            pnlTablaSolcitudesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTablaSolcitudesLayout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addGroup(pnlTablaSolcitudesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSoliTodas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAprobadas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSoliRechazadas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEnProceso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlTablaSolcitudesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblestado, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBuscarsolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnVerInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlSlider.add(pnlTablaSolcitudes, "card2");
+
+        pnlVerProcesar.setBackground(new java.awt.Color(255, 255, 255));
+        pnlVerProcesar.setName("pnlVerProcesar"); // NOI18N
+
+        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pendiente", "En Proceso", "Aprobado", "Rechazado", "Cancelado", "Entregada" }));
+
+        lblEstaVP.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        lblEstaVP.setText("Procesar Solicitud");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(37, 45, 223));
+        jLabel4.setText("Motivo");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(37, 45, 223));
+        jLabel2.setText("Fecha :");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(37, 45, 223));
+        jLabel3.setText("Estado: ");
+
+        txtmotivo.setColumns(20);
+        txtmotivo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtmotivo.setLineWrap(true);
+        txtmotivo.setRows(5);
+        txtmotivo.setWrapStyleWord(true);
+        txtmotivo.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1)));
+        txtmotivo.setCaretColor(new java.awt.Color(153, 153, 153));
+        txtmotivo.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtmotivo.setEnabled(false);
+        txtmotivo.setSelectionColor(new java.awt.Color(204, 204, 204));
+        jScrollPane4.setViewportView(txtmotivo);
+
+        btnGuardar.setBackground(new java.awt.Color(204, 204, 204));
+        btnGuardar.setText("Guardar");
+        btnGuardar.setBackgroundHover(new java.awt.Color(0, 153, 0));
+        btnGuardar.setForegroundIcon(new java.awt.Color(0, 0, 0));
+        btnGuardar.setForegroundText(new java.awt.Color(0, 0, 0));
+        btnGuardar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnGuardar.setIconTextGap(29);
+        btnGuardar.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.SAVE);
+        btnGuardar.setPaddingLeft(15);
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        lblFecha2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(37, 45, 223));
+        jLabel5.setText("Codigo de Solicitud:");
+
+        lblNombreSolic.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(37, 45, 223));
+        jLabel6.setText("Codigo del Solicitante:");
+
+        lblIdSolicitud.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblIdSolicitud.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(37, 45, 223));
+        jLabel7.setText("Nombre del Solicitante:");
+
+        lblIdUser.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+
+        javax.swing.GroupLayout pnlVerProcesarLayout = new javax.swing.GroupLayout(pnlVerProcesar);
+        pnlVerProcesar.setLayout(pnlVerProcesarLayout);
+        pnlVerProcesarLayout.setHorizontalGroup(
+            pnlVerProcesarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVerProcesarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
+            .addGroup(pnlVerProcesarLayout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addGroup(pnlVerProcesarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlVerProcesarLayout.createSequentialGroup()
+                        .addComponent(lblEstaVP, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlVerProcesarLayout.createSequentialGroup()
+                        .addGroup(pnlVerProcesarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlVerProcesarLayout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblNombreSolic, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnlVerProcesarLayout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblIdUser, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)))
+                        .addGap(0, 27, Short.MAX_VALUE))
+                    .addGroup(pnlVerProcesarLayout.createSequentialGroup()
+                        .addGroup(pnlVerProcesarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlVerProcesarLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(0, 0, 0)
+                                .addComponent(lblIdSolicitud, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnlVerProcesarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlVerProcesarLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(10, 10, 10)
+                                .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlVerProcesarLayout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(3, 3, 3)
+                                .addComponent(lblFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(77, 77, 77))))
+        );
+        pnlVerProcesarLayout.setVerticalGroup(
+            pnlVerProcesarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVerProcesarLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(lblEstaVP)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGroup(pnlVerProcesarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVerProcesarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lblIdSolicitud, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVerProcesarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(pnlVerProcesarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlVerProcesarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(pnlVerProcesarLayout.createSequentialGroup()
+                            .addGap(3, 3, 3)
+                            .addComponent(lblFecha2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlVerProcesarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblIdUser, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlVerProcesarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNombreSolic, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        pnlSlider.add(pnlVerProcesar, "card3");
+
+        btnVolver.setBackground(new java.awt.Color(204, 204, 204));
+        btnVolver.setText("Volver");
+        btnVolver.setBackgroundHover(new java.awt.Color(0, 153, 0));
+        btnVolver.setFont(new java.awt.Font("Roboto Bold", 1, 16)); // NOI18N
+        btnVolver.setForegroundIcon(new java.awt.Color(0, 0, 0));
+        btnVolver.setForegroundText(new java.awt.Color(0, 0, 0));
+        btnVolver.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnVolver.setIconTextGap(2);
+        btnVolver.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.KEYBOARD_ARROW_LEFT);
+        btnVolver.setPaddingLeft(14);
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
+
+        btnProcesar.setBackground(new java.awt.Color(204, 204, 204));
+        btnProcesar.setText("Procesar Solicitud");
+        btnProcesar.setBackgroundHover(new java.awt.Color(0, 153, 0));
+        btnProcesar.setFont(new java.awt.Font("Roboto Bold", 1, 16)); // NOI18N
+        btnProcesar.setForegroundIcon(new java.awt.Color(0, 0, 0));
+        btnProcesar.setForegroundText(new java.awt.Color(0, 0, 0));
+        btnProcesar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnProcesar.setIconTextGap(2);
+        btnProcesar.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.SETTINGS_APPLICATIONS);
+        btnProcesar.setPaddingLeft(14);
+        btnProcesar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProcesarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -233,129 +479,210 @@ public class pnlSolicitudes extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(rSPanelEffect1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pnlSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEnProceso, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAprobadas, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSoliRechazadas, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSoliTodas, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(10, 10, 10)
+                        .addComponent(btnProcesar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSoliTodas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAprobadas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSoliRechazadas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEnProceso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rSPanelEffect1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap()
+                .addComponent(pnlSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(btnProcesar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEnProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnProcesoActionPerformed
-        try {
-            cantidad = this.servicio.listarSolicitudes(tablaSolicitudes,"2", 
-                    "","","",null);
-            estado = "2";
-            labelColorTexto("En Proceso ("+cantidad+")",Color.ORANGE);
+        try { 
+            reemplazarVariables("2","","En Proceso ",Color.ORANGE);
+            listarSolicitudes("",nombre,estado,color);
+            
         } catch (SQLException ex) {
             Logger.getLogger(pnlSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        todosSelectFalse();
+        seleccionarFalse();
         btnEnProceso.setSelected(true);
     }//GEN-LAST:event_btnEnProcesoActionPerformed
 
     private void btnSoliRechazadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSoliRechazadasActionPerformed
         try {
-            cantidad = this.servicio.listarSolicitudes(tablaSolicitudes,"5"
-                    ,"","","",null);
-            labelColorTexto("Canceladas ("+cantidad+")",Color.red);
-            estado ="5";
+            reemplazarVariables("4","","Rechazadas ",Color.red);
+            listarSolicitudes("",nombre,estado,color);            
         } catch (SQLException ex) {
             Logger.getLogger(pnlSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        todosSelectFalse();
+        seleccionarFalse();
         btnSoliRechazadas.setSelected(true);
     }//GEN-LAST:event_btnSoliRechazadasActionPerformed
 
     private void btnSoliTodasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSoliTodasActionPerformed
-        try {
-            cantidad =  this.servicio.listarSolicitudes(tablaSolicitudes,"0"
-                    ,"!","","",null);
-            estado ="0";
-            negado="!";
-         labelColorTexto("Todas ("+cantidad+")",Color.blue);
+        try {                         
+            reemplazarVariables("0","!","Todas ",Color.blue);
+            listarSolicitudes("",nombre,estado,color);     
+           
         } catch (SQLException ex) {
             Logger.getLogger(pnlSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        todosSelectFalse();
+        seleccionarFalse();
         btnSoliTodas.setSelected(true);
     }//GEN-LAST:event_btnSoliTodasActionPerformed
 
     private void btnAprobadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprobadasActionPerformed
       
-        try {
-            cantidad =  this.servicio.listarSolicitudes(tablaSolicitudes,"3"
-                    ,"","","",null);
-            labelColorTexto("Aprobadas ("+cantidad+")",Color.green);
-            estado ="3";
+        try {            
+           
+            reemplazarVariables("3","","Aprobadas ",Color.green);
+            listarSolicitudes("",nombre,estado,color);              
         } catch (SQLException ex) {
             Logger.getLogger(pnlSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        todosSelectFalse();
+        seleccionarFalse();
         btnAprobadas.setSelected(true);
     }//GEN-LAST:event_btnAprobadasActionPerformed
 
     private void btnPendienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPendienteActionPerformed
         
-        try {
-            listarPendientes("");
+        try {    
+            
+            reemplazarVariables("1","","Pendientes ",Color.BLACK);
+            listarSolicitudes("",nombre,estado,color);
         } catch (SQLException ex) {
             Logger.getLogger(pnlSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        todosSelectFalse();
+        seleccionarFalse();
         btnPendiente.setSelected(true);
     }//GEN-LAST:event_btnPendienteActionPerformed
 
     private void txtBuscarsolicitudKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarsolicitudKeyReleased
         String buscar = txtBuscarsolicitud.getText();
-        try {
-            this.servicio.listarSolicitudes(tablaSolicitudes, estado, negado
-                    , buscar,"",null);
+        try {   
+            listarSolicitudes(buscar,nombre,estado,color);
         } catch (SQLException ex) {
             Logger.getLogger(pnlSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_txtBuscarsolicitudKeyReleased
+
+    private void btnVerInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerInfoActionPerformed
+       int indice = tablaSolicitudes.getSelectedRow();       
+       if(indice != -1)
+        {
+            Solicitud solicitud = listaSolicitudes.get(indice);
+            llenarDatos(solicitud);
+            lblEstaVP.setText("Visualizar Solicitud");
+            cbxEstado.setEnabled(false);
+            btnGuardar.setVisible(false);
+            btnProcesar.setVisible(false);
+            btnVolver.setVisible(true);
+            this.pnlSlider.setPanelNormal(pnlVerProcesar);
+        }
+        else{        
+            JOptionPane.showMessageDialog(null,"Seleccione un comentario de la lista");
+        }
+       
+
+    }//GEN-LAST:event_btnVerInfoActionPerformed
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        try {
+            lblEstaVP.setText("Procesar Solicitud");
+            this.pnlSlider.setPanelNormal(pnlTablaSolcitudes);
+            btnVolver.setVisible(false);
+            btnProcesar.setVisible(true);
+            listarSolicitudes("",nombre, estado, color);
+            //if(btnAprobadas.isSelected())
+        } catch (SQLException ex) {
+            Logger.getLogger(pnlSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+    }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void btnProcesarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarActionPerformed
+        int indice = tablaSolicitudes.getSelectedRow();       
+       if(indice != -1)
+        {            
+            Solicitud solicitud = listaSolicitudes.get(indice);
+            if(!solicitud.getEstado().getNombre().equals("Cancelado")){
+                llenarDatos(solicitud);           
+                cbxEstado.setEnabled(true);
+                btnVolver.setVisible(true);        
+                btnGuardar.setVisible(true);
+                btnProcesar.setVisible(false);
+                this.pnlSlider.setPanelNormal(pnlVerProcesar);
+            }
+            else{        
+                JOptionPane.showMessageDialog(null,"La solicitud seleccionada "
+                    + "ha sido cancelada por el usuario, "
+                    + "no es posible procesarla.");
+            }        
+        }
+        else{        
+            JOptionPane.showMessageDialog(null,"Seleccione una solicitud "
+                    + "para procesarla.");
+        }
+    }//GEN-LAST:event_btnProcesarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        try {          
+            String idSoli=lblIdSolicitud.getText();
+            String idUser = lblIdUser.getText();
+            int idEstado = cbxEstado.getSelectedIndex()+1;
+            servicio.actualizarEstadoSolicitud(idSoli,idUser,idEstado);           
+            JOptionPane.showMessageDialog(null,"Se ha cambiado el estado de la"
+                   + "solicitud correctamente.");
+        } catch (SQLException ex) {
+            Logger.getLogger(pnlSolicitudes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private RSMaterialComponent.RSButtonMaterialIconOne btnAprobadas;
     private RSMaterialComponent.RSButtonMaterialIconOne btnEnProceso;
+    private RSMaterialComponent.RSButtonMaterialIconOne btnGuardar;
     private RSMaterialComponent.RSButtonMaterialIconOne btnPendiente;
+    private RSMaterialComponent.RSButtonMaterialIconOne btnProcesar;
     private RSMaterialComponent.RSButtonMaterialIconOne btnSoliRechazadas;
     private RSMaterialComponent.RSButtonMaterialIconOne btnSoliTodas;
-    private javax.swing.JPanel jPanel1;
+    private RSMaterialComponent.RSButtonMaterialIconOne btnVerInfo;
+    private RSMaterialComponent.RSButtonMaterialIconOne btnVolver;
+    private RSMaterialComponent.RSComboBoxMaterial cbxEstado;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lblEstaVP;
+    private javax.swing.JLabel lblFecha2;
+    private javax.swing.JLabel lblIdSolicitud;
+    private javax.swing.JLabel lblIdUser;
+    private javax.swing.JLabel lblNombreSolic;
     private javax.swing.JLabel lblestado;
-    private newscomponents.RSPanelEffect rSPanelEffect1;
+    private newscomponents.RSPanelEffect pnlSlider;
+    private javax.swing.JPanel pnlTablaSolcitudes;
+    private javax.swing.JPanel pnlVerProcesar;
     private RSMaterialComponent.RSTableMetroCustom tablaSolicitudes;
     private RSMaterialComponent.RSTextFieldMaterialIcon txtBuscarsolicitud;
+    private javax.swing.JTextArea txtmotivo;
     // End of variables declaration//GEN-END:variables
   
   
-    public void todosSelectFalse(){
+    public void seleccionarFalse(){
         btnEnProceso.setSelected(false);
         btnPendiente.setSelected(false);
         btnSoliRechazadas.setSelected(false);
@@ -366,11 +693,27 @@ public class pnlSolicitudes extends javax.swing.JPanel {
         lblestado.setText(texto);
         lblestado.setForeground(color);
     }
-    
-    public void listarPendientes(String buscar) throws SQLException {
-        cantidad = this.servicio.listarSolicitudes(tablaSolicitudes,"1",""
-                ,buscar,"",null);
-        labelColorTexto("Pendientes ("+cantidad+")",Color.black);
+    public void reemplazarVariables(String estado,String negado
+            ,String nombre,Color color) {
+        this.estado = estado;
+        this.negado=negado;
+        this.nombre = nombre;
+        this.color = color;
     }
-
+    public void listarSolicitudes(String buscar,String texto,String estate,Color color)
+            throws SQLException {   
+        listaSolicitudes = new ArrayList<>();
+        cantidad = this.servicio.listarSolicitudes(tablaSolicitudes,estate,negado
+                ,buscar,"",listaSolicitudes);
+        labelColorTexto(texto+"("+cantidad+")",color);
+    }
+    
+    private void llenarDatos(Solicitud solicitud) {
+        lblIdSolicitud.setText(solicitud.getCodigo());
+        lblIdUser.setText(solicitud.getIdUsuario());
+        lblNombreSolic.setText(solicitud.getNombreUser());
+        cbxEstado.setSelectedItem(solicitud.getEstado().getNombre());
+        txtmotivo.setText(solicitud.getDescripcion());
+        lblFecha2.setText(solicitud.getFecha().toString());
+    }    
 }

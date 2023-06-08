@@ -5,20 +5,15 @@
  */
 package Utilidades;
 
+import Entidades.*;
+import java.util.*;
 import Config.ConexionBaseDeDatos;
-import Entidades.EstadoSolicitud;
-import Entidades.HistorialSolicitudes;
-import Entidades.Solicitud;
-import Entidades.Usuario;
-import RSMaterialComponent.RSTableMetroCustom;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import RSMaterialComponent.RSTableMetroCustom;
 
 
 
@@ -33,6 +28,7 @@ public class ServiciosUsuario {
     private final Statement bdSelect;
     private PreparedStatement bdUpdate;
     private String sqlQuery;
+    
     public ServiciosUsuario() throws ClassNotFoundException, SQLException{
         ConexionBaseDeDatos conection = new ConexionBaseDeDatos();
         this.conexion = conection.getConexion(); 
@@ -41,11 +37,18 @@ public class ServiciosUsuario {
         bdUpdate = conexion.prepareStatement(sqlQuery);
     }
     //Obtener datos de Usuario
-    public ResultSet getUsuario( String username) throws SQLException{        
+    private ResultSet getUsuario( String username) throws SQLException{        
         this.sqlQuery = "select * from Usuario Us where Us.username "
                 + "='".concat(username)+"'";
         ResultSet rs = bdSelect.executeQuery(sqlQuery);      
         return rs;
+    }
+    public int getCodigo(String tipo,String idUsuario) throws SQLException{
+        this.sqlQuery = "select count(id"+tipo+")+1 codigo "
+                + "from "+tipo+" where idUsuario  = '"+idUsuario+"'";
+        ResultSet rs = bdSelect.executeQuery(sqlQuery);
+        rs.next();
+        return rs.getInt("codigo");
     }
     //Obtener todas las Solicitudes
     public ResultSet getSolicitudes() throws SQLException{        
@@ -63,12 +66,14 @@ public class ServiciosUsuario {
 
     
     //Obtener todas las Solicitudes segun su estado
-    public ResultSet getSolicitudes(String negacion,String estado
+    private ResultSet getSolicitudes(String negacion,String estado
             ,String buscar,String codigo) throws SQLException{       
-        this.sqlQuery = "select so.idSolicitud,so.contenidoSolicitud,"
-                + "so.fechaSolicitud, es.nombreEstado,es.descripcionEstado"
-                + ",es.idEstado from Solicitud so inner join Estado es on"
-                + " ( so.idEstado = es.idEstado)";
+        this.sqlQuery = "select u.idUsuario, u.nombre+' '+u.apellidoPaterno+"
+                + "' '+u.apellidoPaterno nombreCompleto,so.idSolicitud"
+                + ",so.contenidoSolicitud,so.fechaSolicitud, es.nombreEstado,"
+                + "es.descripcionEstado,es.idEstado from Solicitud so inner "
+                + "join Usuario u on(so.idUsuario = u.idUsuario)inner join "
+                + "Estado es on(so.idEstado = es.idEstado)";
         if(!estado.equals("")){
             this.sqlQuery += " WHERE es.idEstado "+negacion+"="+estado;
         }
@@ -89,7 +94,7 @@ public class ServiciosUsuario {
         ResultSet rs = bdSelect.executeQuery(this.sqlQuery); 
         return rs;    
     }
-    public ResultSet getEstados(String buscar)throws SQLException{            
+    private ResultSet getEstados(String buscar)throws SQLException{            
         this.sqlQuery = "select * from Estado es where idEstado is not null ";        
         if(!buscar.equals("")){
             this.sqlQuery+= " AND (es.nombreEstado  LIKE '"+buscar
@@ -99,7 +104,7 @@ public class ServiciosUsuario {
         return rs;    
     }
     //Obtener Usuarios con rol de usuario
-    public ResultSet getUsuarios(String rol,String buscar) throws SQLException{        
+    private ResultSet getUsuarios(String rol,String buscar) throws SQLException{        
         this.sqlQuery = "select * from Usuario us inner join Rol rl on"
                 + "( us.idRol = rl.idRol ) where Us.idRol="+rol;
         if(!buscar.equals("")){      
@@ -109,9 +114,19 @@ public class ServiciosUsuario {
         ResultSet rs = bdSelect.executeQuery(sqlQuery);      
         return rs;
     }
-    
+    private ResultSet getAvisos(String buscar) throws SQLException {
+        this.sqlQuery = "select a.idAviso,a.contenidoAviso,a.fechaAviso,"
+                + "u.nombre+' '+u.apellidoPaterno+' '+u.apellidoPaterno "
+                + "nombreCompleto from Aviso a inner join Usuario u "
+                + "on(a.idUsuario = u.idUsuario)";    
+        if(!"".equals(buscar))
+            this.sqlQuery +="where idAviso LIKE '"+buscar
+                    +"%' OR idAviso LIKE '%"+buscar+"%'";        
+        ResultSet rs = bdSelect.executeQuery(sqlQuery);      
+        return rs;
+    }
     //Obtener todas las solicitudes de un Usuario
-    public ResultSet getSolicitudesDeUsuario(String idusuario) 
+    private ResultSet getSolicitudesDeUsuario(String idusuario) 
             throws SQLException{        
         this.sqlQuery = "select so.idSolicitud,so.contenidoSolicitud"+
             ",so.fechaSolicitud,es.idEstado,es.nombreEstado ,es.descripcionEstado "
@@ -120,6 +135,31 @@ public class ServiciosUsuario {
             "where so.idUsuario = '".concat(idusuario)+"'";
         ResultSet rs = bdSelect.executeQuery(sqlQuery); 
         return rs;
+    }
+    private ResultSet getRetroalimentacion(String idUsuario,String tipo
+            ,String buscar) throws SQLException{
+        this.sqlQuery = "select * from "+tipo+" where idUsuario ='"+idUsuario+"'";
+        if(!"".equals(buscar)){
+            if("Sugerencia".equals(tipo))
+                this.sqlQuery+= " AND (idSugerencia LIKE '"+buscar+"%'"
+                        + " OR idSugerencia LIKE '%"+buscar+"%')";
+            else 
+                this.sqlQuery+= " AND (idReclamo LIKE '"+buscar+"%'"
+                        + " OR idReclamo LIKE '%"+buscar+"%')";                
+        }
+        ResultSet rs = bdSelect.executeQuery(sqlQuery); 
+        return rs;
+    }
+    public void insertarRetroalimentacion(int cod,String tipo
+            ,String contenido,String dni) 
+            throws SQLException {
+       
+        this.sqlQuery = "insert into "+tipo+"(id"+tipo+",idUsuario,contenido"
+                +tipo+",fecha"+tipo+") values("+cod+",'"+dni+"'"
+                + ",'"+contenido+"',GETDATE())";
+        bdUpdate = conexion.prepareStatement(sqlQuery);
+        bdUpdate.execute();
+
     }
     
     public void insertarSolicitud(String contenido, String idUsuario
@@ -275,7 +315,7 @@ public class ServiciosUsuario {
         user.setDireccion(direccion);
         user.setFoto(foto);
     }
-     
+    
    
     public int listarUsuarios(RSTableMetroCustom tabla,String rol
                 ,String buscar,List<Usuario> lista) throws SQLException{
@@ -289,14 +329,27 @@ public class ServiciosUsuario {
             ,List<EstadoSolicitud> lista) throws SQLException {
         ResultSet rs = this.getEstados(buscar);             
         Tabla.llenarTablaEstados(rs,tabla,lista);
+    }    
+    public void listarAvisos(RSTableMetroCustom tabla, String buscar,List<Mensaje>
+            lista)
+            throws SQLException {
+        ResultSet rs = this.getAvisos(buscar);
+        Tabla.llenarTablaAvisos(rs,tabla,buscar,lista);
     }
-     public int listarSolicitudes(RSTableMetroCustom tabla,String estado
-            ,String negacion,String buscar,String codigo,HistorialSolicitudes
+    
+    public void listarRetroAlimentacion(RSTableMetroCustom tabla
+            ,String idUsuario, String buscar, String tipo,List<Mensaje> lista) 
+            throws SQLException {
+        ResultSet rs = this.getRetroalimentacion(idUsuario, tipo, buscar);
+        Tabla.llenarTablaRetroAlimentacion(rs,tabla,buscar,lista,tipo);
+        
+    }
+    public int listarSolicitudes(RSTableMetroCustom tabla,String estado
+            ,String negacion,String buscar,String codigo,List<Solicitud>
                     historial) throws SQLException{
         ResultSet rs = this.getSolicitudes(negacion,estado,buscar,codigo);          
         return Tabla.llenarTablaSolicitudes(rs, tabla,historial,codigo);
-    }
-   
+    }  
     
 
     public void actualizarRol(String idUsuario, int rolNuevo)
@@ -319,9 +372,17 @@ public class ServiciosUsuario {
         bdUpdate.setBytes(1, foto);
         bdUpdate.execute();       
      }
+     
+    public void actualizarEstadoSolicitud(String idSoli, String idUser, int estado) 
+            throws SQLException {
+        this.sqlQuery = "update Solicitud set idEstado = "+estado+" where "
+                + "idSolicitud = "+idSoli+" AND idUsuario ='"+idUser+"'";                 
+        bdUpdate = conexion.prepareStatement(sqlQuery);
+        bdUpdate.execute();
+
+    }
      public void actualizarEstados(String idEstado, String nuevoNombre,
-             String nuevaDescrip) throws SQLException {
-         
+             String nuevaDescrip) throws SQLException {         
         this.sqlQuery = "update Estado set nombreEstado = '"+nuevoNombre+"'"
                 + ", descripcionEstado = '"+nuevaDescrip+"' where idEstado = "+
                 idEstado; 
@@ -342,6 +403,13 @@ public class ServiciosUsuario {
         this.conexion.close();
         
     }
+
+
+    
+
+
+
+
 
    
 }

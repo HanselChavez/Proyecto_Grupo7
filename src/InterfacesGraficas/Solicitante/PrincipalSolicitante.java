@@ -69,6 +69,20 @@ public class PrincipalSolicitante extends javax.swing.JFrame {
         } catch (java.sql.SQLException e2) {
             e2.printStackTrace();
         }
+        try {
+            pnlAvisos = new InterfacesGraficas.Solicitante.pnlAvisos();
+        } catch (java.lang.ClassNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (java.sql.SQLException e2) {
+            e2.printStackTrace();
+        }
+        try {
+            pnlRetroalimentacion = new InterfacesGraficas.Solicitante.pnlRetroalimentacion();
+        } catch (java.lang.ClassNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (java.sql.SQLException e2) {
+            e2.printStackTrace();
+        }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -117,6 +131,11 @@ public class PrincipalSolicitante extends javax.swing.JFrame {
         btnRetroalimentacion.setIconTextGap(10);
         btnRetroalimentacion.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.COMMENT);
         btnRetroalimentacion.setSizeIcon(40.0F);
+        btnRetroalimentacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRetroalimentacionActionPerformed(evt);
+            }
+        });
 
         btnAvisos.setText("AVISOS");
         btnAvisos.setColorPrimario(new java.awt.Color(0, 87, 151));
@@ -127,6 +146,11 @@ public class PrincipalSolicitante extends javax.swing.JFrame {
         btnAvisos.setIconTextGap(10);
         btnAvisos.setIcons(rojeru_san.efectos.ValoresEnum.ICONS.ANNOUNCEMENT);
         btnAvisos.setSizeIcon(40.0F);
+        btnAvisos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAvisosActionPerformed(evt);
+            }
+        });
 
         btnPerfil.setText("PERFIL");
         btnPerfil.setColorPrimario(new java.awt.Color(0, 87, 151));
@@ -259,6 +283,12 @@ public class PrincipalSolicitante extends javax.swing.JFrame {
         pnlSolicitudesUsuario.setName("pnlSolicitudesUsuario"); // NOI18N
         panslid.add(pnlSolicitudesUsuario, "card3");
 
+        pnlAvisos.setName("pnlAvisos"); // NOI18N
+        panslid.add(pnlAvisos, "card4");
+
+        pnlRetroalimentacion.setName("pnlRetroalimentacion"); // NOI18N
+        panslid.add(pnlRetroalimentacion, "card5");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -348,6 +378,33 @@ public class PrincipalSolicitante extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSolicitudesActionPerformed
 
+    private void btnAvisosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvisosActionPerformed
+        try {
+            btnSolicitudes.setSelected(false);
+            btnAvisos.setSelected(true);
+            btnRetroalimentacion.setSelected(false);
+            btnPerfil.setSelected(false);
+            pnlAvisos.actualizarLista("");
+            this.panslid.setPanelNormal(pnlAvisos);
+        } catch (SQLException ex) {
+            Logger.getLogger(PrincipalSolicitante.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnAvisosActionPerformed
+
+    private void btnRetroalimentacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetroalimentacionActionPerformed
+         try {
+            btnSolicitudes.setSelected(false);
+            btnAvisos.setSelected(false);
+            btnRetroalimentacion.setSelected(true);
+            btnPerfil.setSelected(false);
+            pnlRetroalimentacion.cargarUsuario(user);
+            this.panslid.setPanelNormal(pnlRetroalimentacion);
+        } catch (SQLException ex) {
+            Logger.getLogger(PrincipalSolicitante.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnRetroalimentacionActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private newscomponents.RSButtonGradientIcon_new btnAvisos;
@@ -364,7 +421,9 @@ public class PrincipalSolicitante extends javax.swing.JFrame {
     private javax.swing.JLabel lblapellidos;
     private javax.swing.JLabel lblnombres;
     private newscomponents.RSPanelEffect panslid;
+    private InterfacesGraficas.Solicitante.pnlAvisos pnlAvisos;
     private InterfacesGraficas.Perfil.pnlPerfiles pnlPerfiles;
+    private InterfacesGraficas.Solicitante.pnlRetroalimentacion pnlRetroalimentacion;
     private InterfacesGraficas.Solicitante.pnlSolicitudesUsuario pnlSolicitudesUsuario;
     private rspanelgradiente.RSPanelGradiente rSPanelGradiente1;
     // End of variables declaration//GEN-END:variables
