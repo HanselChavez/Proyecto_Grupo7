@@ -248,8 +248,7 @@ public class CrearCuenta extends javax.swing.JFrame {
 
     private void btnCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseClicked
         this.dispose();
-        login.setVisible(true);
-        
+        login.setVisible(true);        
     }//GEN-LAST:event_btnCancelarMouseClicked
 
     private void btnAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarMouseClicked

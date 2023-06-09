@@ -18,12 +18,18 @@ public class ConexionBaseDeDatos {
    
     public Connection getConexion() throws ClassNotFoundException,SQLException{
         try{              
-
+            
             String url = "jdbc:sqlserver://localhost:1433;databaseName=WaterService";
             String usuario = "sa";
             String contraseña = "CARLOS3231234";
+            /*String url = "jdbc:sqlserver://grupo07tecpoo.database.windows.net:1433;"
+            + "database=WaterService;user=grupo07@grupo07tecpoo;password=Grupo7TecPoo"
+            + ";encrypt=true;trustServerCertificate=false;hostNameInCertificate=*"
+                    + ".database.windows.net;loginTimeout=30;";
+            String usuario = "grupo07";
+            String contraseña = "Grupo7TecPoo";*/
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            conexion= DriverManager.getConnection(url, usuario, contraseña);
+            conexion= DriverManager.getConnection(url,usuario,contraseña);
             return conexion;
            
         }catch(ClassNotFoundException | SQLException ex){

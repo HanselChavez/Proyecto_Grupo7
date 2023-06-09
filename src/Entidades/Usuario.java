@@ -4,20 +4,12 @@
  * and open the template in the editor.
  */
 package Entidades;
-import java.util.Date;
-import java.util.Arrays;
 /**
  *
- * @author chave
+ * @author Hansel Chavez
  */
-public class Usuario {
-    private String dni ;
-    private String nombre;
-    private String segundoNombre;
-    private String apellidoPaterno;
-    private String apellidoMaterno;
-    private Date fechaNac;
-    private String direccion;
+public class Usuario extends Persona{
+   
     private String correo;
     private String nombreUsuario;
     private String celular;
@@ -25,7 +17,7 @@ public class Usuario {
     private byte[] fotoBytes;
     private int rol;
     public Usuario(){
-    
+        fotoBytes = null;
     }
     public int getRol() {
         return rol;
@@ -41,50 +33,7 @@ public class Usuario {
 
     public void setFoto(byte[] foto) {
         this.fotoBytes = foto;
-    }
-    
-    
-    public String getDni() {
-        return dni;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
-    }
-
-    public String getNombres() {
-        return nombre+" "+segundoNombre;
-    }
-
-    public void setNombres(String pnombre,String snombre) {
-        this.nombre = pnombre;
-        this.segundoNombre = snombre;
-    }
-
-    public String getApellidos() {
-        return apellidoPaterno+" "+apellidoMaterno;
-    }
-
-    public void setApellidos(String apellidoP,String apellidoM) {
-        this.apellidoPaterno = apellidoP;
-        this.apellidoMaterno = apellidoM;
-    }
-
-    public Date getFechaNac() {
-        return fechaNac;
-    }
-
-    public void setFechaNac(Date fechaNac) {
-        this.fechaNac = fechaNac;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
+    }   
 
     public String getCorreo() {
         return correo;
@@ -118,33 +67,25 @@ public class Usuario {
         this.nombreUsuario = nombreUsuario;
     }
     
-    public String[] toArrayString(){
-        String [] array=new String[13];
+    public Object[] toArrayString(){
+        Object [] array=new Object[13];
         array[0]=this.dni;
         array[1]=this.nombre;
         array[2]=this.segundoNombre;
         array[3]=this.apellidoPaterno;
         array[4]=this.apellidoMaterno;
-        array[5]=this.fechaNac.toString();
+        array[5]=this.getFechaString();
         array[6]=this.nombreUsuario;
         array[7]=this.correo;
         array[8]=this.contraseña;
         array[9]=this.celular;
         array[10]=this.direccion;
         array[11]=String.valueOf(this.rol);      
-        array[12]=Arrays.toString(this.fotoBytes);
+        array[12]=this.fotoBytes;
                 
         return array;  
     }
-    @Override
-    public String toString() {
-        return "Usuario{" + "dni=" + dni + ", nombres=" 
-                + nombre + ", apellidos=" + apellidoPaterno 
-                + ", fechaNac=" + fechaNac + ", direccion="
-                + direccion + ", correo=" + correo + ", celular=" 
-                + celular + ", contrase\u00f1a=" + contraseña
-                + ", rol=" + rol + '}';
-    }
+  
     
     
 }

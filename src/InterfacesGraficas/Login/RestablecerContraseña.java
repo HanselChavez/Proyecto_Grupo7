@@ -47,6 +47,7 @@ public class RestablecerContraseña extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(12, 140, 233));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

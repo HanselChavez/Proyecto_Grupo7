@@ -19,11 +19,11 @@ public class ServicoDeAgua {
      * @throws java.lang.ClassNotFoundException
      * @throws java.sql.SQLException
      */
-     public static void main(String args[]) throws ClassNotFoundException
-        , SQLException {  
-        IniciarSesion login = new IniciarSesion();
-        login.setVisible(true);
-        
+    public static void main(String args[]) throws ClassNotFoundException
+       , SQLException {  
+       IniciarSesion login = new IniciarSesion();
+       login.setVisible(true);
+
     }  
     
 }

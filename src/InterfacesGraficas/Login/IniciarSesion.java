@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Utilidades.ServiciosUsuario;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import rojeru_san.complementos.RSEffectFade;
 
@@ -31,7 +33,7 @@ public class IniciarSesion extends javax.swing.JFrame {
         initComponents();
         inicializarVariables();
         initControlls();
-        RSEffectFade.setFadeWindowIn(this, 30,0.05f);
+        RSEffectFade.setFadeWindowIn(this, 30,0.1f);
     }
 
     /**
@@ -44,7 +46,6 @@ public class IniciarSesion extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         btnMinimize = new javax.swing.JLabel();
         btnClose = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -58,20 +59,16 @@ public class IniciarSesion extends javax.swing.JFrame {
         btnVer = new javax.swing.JLabel();
         btnOcultar = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        btnIniciarSesion = new javax.swing.JLabel();
         lblfaltauser = new javax.swing.JLabel();
         lblfaltacontra = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        btnIniciar = new RSMaterialComponent.RSButtonMaterialOne();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(0, 0));
         setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(12, 140, 233));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setToolTipText("");
-        jLabel1.setName("btnShow"); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(618, 315, -1, -1));
 
         btnMinimize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/32wtminimize-sign.png"))); // NOI18N
         btnMinimize.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -80,7 +77,6 @@ public class IniciarSesion extends javax.swing.JFrame {
                 btnMinimizeMouseClicked(evt);
             }
         });
-        jPanel1.add(btnMinimize, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 10, -1, -1));
 
         btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/32wtclose.png"))); // NOI18N
         btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -89,7 +85,6 @@ public class IniciarSesion extends javax.swing.JFrame {
                 btnCloseMouseClicked(evt);
             }
         });
-        jPanel1.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 10, 32, 32));
 
         jPanel2.setBackground(new java.awt.Color(30, 30, 30));
 
@@ -161,20 +156,6 @@ public class IniciarSesion extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/128wtuser.png"))); // NOI18N
 
-        btnIniciarSesion.setBackground(new java.awt.Color(30, 30, 30));
-        btnIniciarSesion.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        btnIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
-        btnIniciarSesion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnIniciarSesion.setText("Iniciar Sesion");
-        btnIniciarSesion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 3));
-        btnIniciarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnIniciarSesion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnIniciarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnIniciarSesionMouseClicked(evt);
-            }
-        });
-
         lblfaltauser.setBackground(new java.awt.Color(255, 0, 0));
         lblfaltauser.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblfaltauser.setForeground(new java.awt.Color(255, 0, 0));
@@ -183,92 +164,148 @@ public class IniciarSesion extends javax.swing.JFrame {
         lblfaltacontra.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblfaltacontra.setForeground(new java.awt.Color(255, 0, 0));
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        btnIniciar.setBackground(new java.awt.Color(30, 30, 30));
+        btnIniciar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 5));
+        btnIniciar.setText("Iniciar Sesion");
+        btnIniciar.setBackgroundHover(new java.awt.Color(72, 72, 72));
+        btnIniciar.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        btnIniciar.setRequestFocusEnabled(false);
+        btnIniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIniciarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(3, 3, 3)
+                .addComponent(btnIniciar, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                .addGap(3, 3, 3))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(4, 4, 4)
+                .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4))
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(140, 140, 140)
-                .addComponent(jLabel2)
-                .addGap(142, 142, 142))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(lblfaltauser, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(txtContraseña)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(46, 46, 46)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnOcultar)
-                            .addComponent(btnVer))
-                        .addGap(36, 36, 36))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lblUser)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(90, 90, 90)
-                                .addComponent(btnCrearCuenta))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(50, 50, 50)
-                                .addComponent(btnRecuperarContraseña))
-                            .addComponent(btnIniciarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblfaltacontra, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblestado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(78, 78, 78))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                                    .addComponent(lblfaltacontra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnOcultar)
+                                    .addComponent(btnVer)))
+                            .addComponent(lblContraseña)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(lblfaltauser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtUsuario))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblestado, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(lblContraseña)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(96, 96, 96)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRecuperarContraseña)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(35, 35, 35)
+                                .addComponent(btnCrearCuenta)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(113, 113, 113))
         );
+
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtContraseña, txtUsuario});
+
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(27, 27, 27)
                 .addComponent(lblUser)
-                .addGap(8, 8, 8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblfaltauser, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(13, 13, 13)
                 .addComponent(lblContraseña)
-                .addGap(8, 8, 8)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOcultar)
-                    .addComponent(btnVer))
+                .addGap(7, 7, 7)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnOcultar)
+                        .addComponent(btnVer))
+                    .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblfaltacontra, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblestado, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnCrearCuenta)
-                .addGap(13, 13, 13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRecuperarContraseña)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 410, 540));
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtContraseña, txtUsuario});
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnMinimize)
+                .addGap(8, 8, 8)
+                .addComponent(btnClose)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnMinimize)
+                    .addComponent(btnClose))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(51, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -288,38 +325,6 @@ public class IniciarSesion extends javax.swing.JFrame {
         txtContraseña.setEchoChar('●');
     }//GEN-LAST:event_btnOcultarMouseClicked
 
-    private void btnIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseClicked
-        Usuario user ;
-        String username = txtUsuario.getText();
-        String password = txtContraseña.getText();
-        if(username.equals(""))
-        {
-        this.lblfaltauser.setText("Este campo es requerido.");
-        }
-        if(password.equals("")){
-          this.lblfaltacontra.setText("Este campo es requerido.");
-        }
-        if(!username.equals("")&&!password.equals(""))
-        {   try {  
-                if(userService.validarUsuario(username, password)){
-                    user = userService.cargarDatosSesion( username, password);
-                    lblestado.setForeground(Color.GREEN);                
-                    lblestado.setText("Usuario autenticado"); 
-                    abrirForms(user);  
-                    cerrarForm();
-                }
-                else{
-                    lblestado.setForeground(Color.RED);
-                    lblestado.setText("Las credenciales no son correctas.");
-                } 
-            } catch (SQLException ex) {
-                    Logger.getLogger(IniciarSesion.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(null, ex,"Error Iniciar",0);
-            }
-            
-        }                
-    }//GEN-LAST:event_btnIniciarSesionMouseClicked
-
     private void btnCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMouseClicked
         
         try {        
@@ -336,10 +341,12 @@ public class IniciarSesion extends javax.swing.JFrame {
 
     private void txtUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuarioKeyTyped
         this.lblfaltauser.setText("");
+        lblestado.setText("");
     }//GEN-LAST:event_txtUsuarioKeyTyped
 
     private void txtContraseñaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContraseñaKeyTyped
         this.lblfaltacontra.setText("");
+        lblestado.setText("");
     }//GEN-LAST:event_txtContraseñaKeyTyped
 
     private void btnCrearCuentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCrearCuentaMouseClicked
@@ -356,19 +363,54 @@ public class IniciarSesion extends javax.swing.JFrame {
         ocultarForm();
     }//GEN-LAST:event_btnRecuperarContraseñaMouseClicked
 
+    private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
+        Usuario user ;
+        String username = txtUsuario.getText();
+        String password = txtContraseña.getText();
+        if(username.equals(""))
+        {
+        this.lblfaltauser.setText("Este campo es requerido.");
+        }
+        if(password.equals("")){
+          this.lblfaltacontra.setText("Este campo es requerido.");
+        }
+        if(!username.equals("")&&!password.equals(""))
+        {   try {  
+                if(userService.validarUsuario(username, password)){
+                    user = userService.cargarDatosSesion( username);
+                    lblestado.setForeground(Color.GREEN);                
+                    lblestado.setText("Usuario autenticado"); 
+                    abrirForms(user);  
+                    ocultarForm();
+                    //cerrarForm();
+                }
+                else{
+                    lblestado.setForeground(Color.RED);
+                    lblestado.setText("Las credenciales no son correctas.");
+                } 
+            } catch (SQLException ex) {
+                    Logger.getLogger(IniciarSesion.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, ex,"Error Iniciar",0);
+            } catch (IOException ex) {
+                Logger.getLogger(IniciarSesion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }      
+    }//GEN-LAST:event_btnIniciarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JLabel btnClose;
     private javax.swing.JLabel btnCrearCuenta;
-    private javax.swing.JLabel btnIniciarSesion;
+    private RSMaterialComponent.RSButtonMaterialOne btnIniciar;
     private javax.swing.JLabel btnMinimize;
     private javax.swing.JLabel btnOcultar;
     private javax.swing.JLabel btnRecuperarContraseña;
     private javax.swing.JLabel btnVer;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lblContraseña;
     private javax.swing.JLabel lblUser;
     private javax.swing.JLabel lblestado;
@@ -380,19 +422,22 @@ public class IniciarSesion extends javax.swing.JFrame {
    
     //Funciones 
     
-    public void abrirForms(Usuario user) throws SQLException {
+    public void abrirForms(Usuario user) throws SQLException, IOException {
                 
         switch (user.getRol()) {
             case 1:
-                PrincipalTrabajador pantallaTrabajador= new PrincipalTrabajador(user);
+                PrincipalTrabajador pantallaTrabajador =
+                        new PrincipalTrabajador(user,this);
                 pantallaTrabajador.setVisible(true);
                 break;
             case 2:
-                PrincipalSolicitante pantallaUsuario = new PrincipalSolicitante(user,this);
+                PrincipalSolicitante pantallaUsuario = 
+                        new PrincipalSolicitante(user,this);
                 pantallaUsuario.setVisible(true);
                 break;
             default:
-                PrincipalAdmin pantallAdmin = new PrincipalAdmin(user);
+                PrincipalAdmin pantallAdmin = 
+                        new PrincipalAdmin(user,this);
                 pantallAdmin.setVisible(true);
                 break;
         }
@@ -411,7 +456,8 @@ public class IniciarSesion extends javax.swing.JFrame {
     }
     public void cerrarForm() throws SQLException{      
         userService.cerrarConexion();
-        this.dispose();
+        
+        System.exit(0);
     }     
     public void inicializarVariables() throws ClassNotFoundException, SQLException {            
    
@@ -422,8 +468,8 @@ public class IniciarSesion extends javax.swing.JFrame {
         btnOcultar.setVisible(false);
         lblfaltacontra.setText(null);
         lblfaltauser.setText(null);
-        txtContraseña.setText("");
-        txtUsuario.setText("");
-        lblestado.setText("");
+        txtContraseña.setText(null);
+        txtUsuario.setText(null);
+        lblestado.setText(null);
     } 
 }

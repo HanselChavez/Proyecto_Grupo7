@@ -16,17 +16,30 @@ public class Solicitud {
     private String descripcion;
     private Date fecha;
     private EstadoSolicitud estado;
+    private String idUsuario;
+    private String nombre;
     public Solicitud(){
     
     }
+
+    public String getNombreUser() {
+        return nombre;
+    }
+    public void setNombreUser(String nombre) {
+        this.nombre = nombre;
+    }    
     public String getCodigo() {
         return codigo;
-    }
-
+    }    
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
-
+    public void setIdUsuario(String id){
+        this.idUsuario = id;
+    }
+    public String getIdUsuario(){
+        return idUsuario;
+    }
     public String getDescripcion() {
         return descripcion;
     }
@@ -50,6 +63,12 @@ public class Solicitud {
     public void setEstado(EstadoSolicitud estado) {
         this.estado = estado;
     }
+
+    @Override
+    public String toString() {
+        return "Estado" +estado.getNombre();
+    }
+    
     
     
 }

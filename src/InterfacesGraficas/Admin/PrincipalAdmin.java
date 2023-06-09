@@ -4,11 +4,13 @@
  * and open the template in the editor.
  */
 package InterfacesGraficas.Admin;
-
 import Entidades.*;
-import newscomponents.RSPanelEffect;
-import rojeru_san.complementos.RSEffectFade;
-import rojerusan.RSPanelsSlider;
+import InterfacesGraficas.Login.IniciarSesion;
+import Utilidades.Foto;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -20,17 +22,16 @@ public class PrincipalAdmin extends javax.swing.JFrame {
     /**
      * Creates new form PrincipalAdmin
      */
-    Usuario user;
-  
-    public PrincipalAdmin(Usuario user) {       
+    static Usuario user = new Usuario();
+    IniciarSesion login;
+    public PrincipalAdmin(Usuario user,IniciarSesion login)
+            throws IOException {       
         initComponents();
-        this.user = user;      
-        this.setLocationRelativeTo(null);
-        RSEffectFade.setFadeWindowIn(this, 30,0.1f);
-        this.panslid.setPanelNormal(this.pnlUsuarios);
-        lblnombres.setText(user.getNombres());
-        lblapellidos.setText(user.getApellidos());
-    }
+        this.login = login;
+        PrincipalAdmin.user = user;
+        iniciarValores();
+        cargarUsuario();      
+    }   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,20 +50,28 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         btnPerfil = new newscomponents.RSButtonGradientIcon_new();
         lblnombres = new javax.swing.JLabel();
         lblapellidos = new javax.swing.JLabel();
+        lblFotoPrincipal = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         btnMinimize = new javax.swing.JLabel();
         btnClose = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         panslid = new newscomponents.RSPanelEffect();
         try {
-            pnlUsuarios = new InterfacesGraficas.Admin.Usuarios.pnlUsuarios();
+            pnlSolicitudes = new InterfacesGraficas.Admin.pnlEstadoSolicitud();
         } catch (java.lang.ClassNotFoundException e1) {
             e1.printStackTrace();
         } catch (java.sql.SQLException e2) {
             e2.printStackTrace();
         }
         try {
-            pnlSolicitudes = new InterfacesGraficas.Admin.Solicitudes.pnlEstadoSolicitud();
+            pnlUsuarios = new InterfacesGraficas.Admin.pnlUsuarios();
+        } catch (java.lang.ClassNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (java.sql.SQLException e2) {
+            e2.printStackTrace();
+        }
+        try {
+            pnlPerfiles = new InterfacesGraficas.Perfil.pnlPerfiles();
         } catch (java.lang.ClassNotFoundException e1) {
             e1.printStackTrace();
         } catch (java.sql.SQLException e2) {
@@ -76,6 +85,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         rSPanelGradiente1.setColorSecundario(new java.awt.Color(12, 140, 233));
         rSPanelGradiente1.setGradiente(rspanelgradiente.RSPanelGradiente.Gradiente.VERTICAL);
 
+        btnSalir.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 25, 1, 1));
         btnSalir.setForeground(new java.awt.Color(0, 0, 0));
         btnSalir.setText("SALIR");
         btnSalir.setColorPrimario(new java.awt.Color(0, 87, 151));
@@ -93,6 +103,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         });
 
         btnUsuarios.setBackground(new java.awt.Color(12, 140, 233));
+        btnUsuarios.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 25, 1, 1));
         btnUsuarios.setForeground(new java.awt.Color(0, 0, 0));
         btnUsuarios.setText("USUARIOS");
         btnUsuarios.setColorPrimario(new java.awt.Color(0, 87, 151));
@@ -110,6 +121,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
             }
         });
 
+        btnSolicitudes.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 25, 1, 1));
         btnSolicitudes.setForeground(new java.awt.Color(0, 0, 0));
         btnSolicitudes.setText("SOLICITUDES");
         btnSolicitudes.setColorPrimario(new java.awt.Color(0, 87, 151));
@@ -126,6 +138,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
             }
         });
 
+        btnPerfil.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 25, 1, 1));
         btnPerfil.setForeground(new java.awt.Color(0, 0, 0));
         btnPerfil.setText("PERFIL");
         btnPerfil.setColorPrimario(new java.awt.Color(0, 87, 151));
@@ -144,37 +157,48 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         });
 
         lblnombres.setBackground(new java.awt.Color(255, 255, 255));
-        lblnombres.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblnombres.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         lblnombres.setForeground(new java.awt.Color(255, 255, 255));
         lblnombres.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         lblapellidos.setBackground(new java.awt.Color(255, 255, 255));
-        lblapellidos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblapellidos.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         lblapellidos.setForeground(new java.awt.Color(255, 255, 255));
         lblapellidos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        lblFotoPrincipal.setBackground(new java.awt.Color(255, 255, 255));
+        lblFotoPrincipal.setForeground(new java.awt.Color(255, 255, 255));
+        lblFotoPrincipal.setOpaque(true);
 
         javax.swing.GroupLayout rSPanelGradiente1Layout = new javax.swing.GroupLayout(rSPanelGradiente1);
         rSPanelGradiente1.setLayout(rSPanelGradiente1Layout);
         rSPanelGradiente1Layout.setHorizontalGroup(
             rSPanelGradiente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnSolicitudes, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rSPanelGradiente1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(rSPanelGradiente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblapellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                    .addComponent(lblnombres, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
+            .addGroup(rSPanelGradiente1Layout.createSequentialGroup()
                 .addGroup(rSPanelGradiente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rSPanelGradiente1Layout.createSequentialGroup()
-                        .addGroup(rSPanelGradiente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblnombres, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
-                            .addComponent(lblapellidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(25, 25, 25))))
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSolicitudes, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPerfil, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(rSPanelGradiente1Layout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addComponent(lblFotoPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         rSPanelGradiente1Layout.setVerticalGroup(
             rSPanelGradiente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rSPanelGradiente1Layout.createSequentialGroup()
-                .addContainerGap(112, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblFotoPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblnombres, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblapellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -182,15 +206,13 @@ public class PrincipalAdmin extends javax.swing.JFrame {
                 .addComponent(btnUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(btnSolicitudes, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(100, 100, 100)
+                .addGap(0, 0, 0)
                 .addComponent(btnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addGroup(rSPanelGradiente1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(rSPanelGradiente1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(127, 127, 127))
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(130, 130, 130))
         );
 
         jPanel2.setBackground(new java.awt.Color(12, 140, 233));
@@ -236,11 +258,19 @@ public class PrincipalAdmin extends javax.swing.JFrame {
 
         panslid.setBackground(new java.awt.Color(255, 255, 255));
 
+        pnlSolicitudes.setName("pnlSolicitudes"); // NOI18N
+        panslid.add(pnlSolicitudes, "card3");
+
         pnlUsuarios.setName("pnlUsuarios"); // NOI18N
         panslid.add(pnlUsuarios, "card2");
 
-        pnlSolicitudes.setName("pnlSolicitudes"); // NOI18N
-        panslid.add(pnlSolicitudes, "card3");
+        pnlPerfiles.setName("pnlPerfiles"); // NOI18N
+        pnlPerfiles.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                pnlPerfilesMouseMoved(evt);
+            }
+        });
+        panslid.add(pnlPerfiles, "card4");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -265,7 +295,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(1, 1, 1)
-                .addComponent(rSPanelGradiente1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(rSPanelGradiente1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -293,35 +323,63 @@ public class PrincipalAdmin extends javax.swing.JFrame {
 
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
         
-            btnUsuarios.setSelected(true);
-            btnSolicitudes.setSelected(false);          
-            btnPerfil.setSelected(false);
-            this.panslid.setPanelNormal(this.pnlUsuarios);  
+        try {
+            if(!btnUsuarios.isSelected()){
+                btnUsuarios.setSelected(true);
+                btnSolicitudes.setSelected(false);
+                btnPerfil.setSelected(false);
+                this.panslid.setPanelNormal(this.pnlUsuarios); 
+                cargarUsuario();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(PrincipalAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_btnUsuariosActionPerformed
 
     private void btnSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolicitudesActionPerformed
       
-            btnUsuarios.setSelected(false);
-            btnSolicitudes.setSelected(true);
-            btnPerfil.setSelected(false);
-            this.panslid.setPanelNormal(this.pnlSolicitudes);     
-       
+        try {
+            if(!btnSolicitudes.isSelected()){
+                btnUsuarios.setSelected(false);
+                btnSolicitudes.setSelected(true);
+                btnPerfil.setSelected(false);
+                this.panslid.setPanelNormal(this.pnlSolicitudes);  
+                cargarUsuario();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(PrincipalAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnSolicitudesActionPerformed
 
     private void btnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerfilActionPerformed
-        if(!btnPerfil.isSelected()){
-            btnUsuarios.setSelected(false);
-            btnSolicitudes.setSelected(false);
-    
-            btnPerfil.setSelected(true);
-         }
-    }//GEN-LAST:event_btnPerfilActionPerformed
-
-    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        try {
+            if(!btnPerfil.isSelected()){
+                pnlPerfiles.cargarDatos(user, this,login);
+                pnlPerfiles.cargarPerfil();
+                btnUsuarios.setSelected(false);
+                btnSolicitudes.setSelected(false);
+                btnPerfil.setSelected(true);      
+                this.panslid.setPanelNormal(pnlPerfiles);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(PrincipalAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        System.exit(0);
+    }//GEN-LAST:event_btnPerfilActionPerformed
+    
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        System.exit(0);       
     }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void pnlPerfilesMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlPerfilesMouseMoved
+        try {
+            cargarUsuario();
+        } catch (IOException ex) {
+            Logger.getLogger(PrincipalAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_pnlPerfilesMouseMoved
+
 
     
 
@@ -335,15 +393,32 @@ public class PrincipalAdmin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblFotoPrincipal;
     private javax.swing.JLabel lblapellidos;
     private javax.swing.JLabel lblnombres;
     private newscomponents.RSPanelEffect panslid;
-    private InterfacesGraficas.Admin.Solicitudes.pnlEstadoSolicitud pnlSolicitudes;
-    private InterfacesGraficas.Admin.Usuarios.pnlUsuarios pnlUsuarios;
+    private InterfacesGraficas.Perfil.pnlPerfiles pnlPerfiles;
+    private InterfacesGraficas.Admin.pnlEstadoSolicitud pnlSolicitudes;
+    private InterfacesGraficas.Admin.pnlUsuarios pnlUsuarios;
     private rspanelgradiente.RSPanelGradiente rSPanelGradiente1;
     // End of variables declaration//GEN-END:variables
-
+    public static Usuario getUsuario(){
+        return PrincipalAdmin.user;
+    }
     private void cerrarForm() {
         System.exit(0);
+    }
+    public void cerrarCesion() throws ClassNotFoundException, SQLException{
+        login.setVisible(true);             
+    }
+    public void iniciarValores() {
+        this.setLocationRelativeTo(null);
+        //RSEffectFade.setFadeWindowIn(this, 30,0.1f);
+        this.panslid.setPanelNormal(this.pnlUsuarios);
+    }
+    public  void cargarUsuario() throws IOException {          
+        lblnombres.setText(user.getNombres());
+        lblapellidos.setText(user.getApellidos());
+        Foto.cargarFoto(lblFotoPrincipal, user.getFoto());            
     }
 }
